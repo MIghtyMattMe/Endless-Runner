@@ -12,6 +12,8 @@ class Play extends Phaser.Scene {
     create() {
         this.obj = [];
         this.generation();
+        this.physics.add.group() = obs
+        //this.physics.world.setFPS(60)
     }
 
     update() {
