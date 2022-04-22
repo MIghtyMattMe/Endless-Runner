@@ -4,12 +4,25 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image("pSprite", "./assets/player.png");
+        this.load.image("ground", "./assets/ground.png");
+
         this.load.image("testObstacle1", "./assets/testObstacle1.png");
         this.load.image("testObstacle2", "./assets/testObstacle2.png");
         this.load.image("testObstacle3", "./assets/testObstacle3.png");
     }
 
     create() {
+
+        //ground + player creation
+        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding, "ground");
+        ground.body.allowGravity = false;
+        ground.setImmovable();
+        let player = new Player(this, game.config.width/2, game.config.height - borderPadding - borderUISize - ground.height, "pSprite");
+        player.setGravityY(100);
+
+        this.physics.add.collider(player, ground);
+
         this.obj = [];
         this.generation();
         this.physics.add.group() = obs
@@ -25,6 +38,7 @@ class Play extends Phaser.Scene {
                 }
             }
         }
+
     }
 
     generation() {
