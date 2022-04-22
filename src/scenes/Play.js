@@ -18,8 +18,8 @@ class Play extends Phaser.Scene {
         let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding, "ground");
         ground.body.allowGravity = false;
         ground.setImmovable();
-        let player = new Player(this, game.config.width/2, game.config.height - borderPadding - borderUISize - ground.height, "pSprite");
-        player.setGravityY(100);
+        player = new Player(this, game.config.width/2, game.config.height - borderPadding - borderUISize - ground.height, "pSprite");
+        player.setGravityY(1200);
 
         this.physics.add.collider(player, ground);
 
@@ -27,6 +27,10 @@ class Play extends Phaser.Scene {
         this.obs = this.physics.add.group()
         this.obj = [];
         this.generation();
+
+        //jump and pause keys
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     }
 
     update() {
@@ -39,6 +43,13 @@ class Play extends Phaser.Scene {
                 }
             }
         }
+
+        //sprite update call
+        if(!Phaser.Input.Keyboard.JustDown(keyP)){
+            player.update();
+        }
+        //is touching ground?
+        
 
     }
 

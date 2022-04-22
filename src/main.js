@@ -19,4 +19,7 @@ let game = new Phaser.Game(config);
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 //keyboard vars
-let keyLEFT, keyRIGHT, keySPACE, keyENTER;
+let keyLEFT, keyRIGHT, keySPACE, keyENTER, keyP;
+
+//sprite
+let player;
