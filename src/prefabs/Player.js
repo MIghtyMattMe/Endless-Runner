@@ -11,10 +11,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
     update() {
-      if(keySPACE.isDown){
-        console.log("down");
-      }
-
       if(keySPACE.isDown && !this.jump){
         this.jump = true;
         this.setVelocityY(-500);
@@ -26,9 +22,5 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     reset() {
       
-    }
-
-    jump(){
-      this.setVelocityY(-100);
     }
 }
