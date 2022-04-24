@@ -7,7 +7,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
       this.jump = false;
       this.exponential = 2
-      this.xSpeed = -12;
+      this.xSpeed = -3;
     }
 
 
