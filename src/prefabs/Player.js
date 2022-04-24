@@ -7,10 +7,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
       this.jump = false;
       this.exponential = 2
+      this.xSpeed = -12;
     }
 
 
     update() {
+
       if(keySPACE.isDown && !this.jump){
         this.jump = true;
         this.setVelocityY(-500);

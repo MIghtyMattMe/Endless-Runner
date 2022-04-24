@@ -20,6 +20,7 @@ class Play extends Phaser.Scene {
         ground.setImmovable();
         player = new Player(this, game.config.width/2, game.config.height - borderPadding - borderUISize - ground.height, "pSprite");
         player.setGravityY(1200);
+        player.setVelocityX(player.xSpeed);
         this.playerVelocity = new Phaser.Math.Vector2(0,0);
 
         //makeing obstacles
@@ -29,7 +30,7 @@ class Play extends Phaser.Scene {
 
         //add colliders
         this.physics.add.collider(player, ground);
-        this.physics.add.collider(player, this.obs);
+        this.physics.add.overlap(player, this.obs, this.trip, null, this);
 
         //jump and pause keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -53,6 +54,8 @@ class Play extends Phaser.Scene {
             }
         });
         this.pause = false
+
+
     }
 
     update() {
@@ -69,6 +72,8 @@ class Play extends Phaser.Scene {
             }
             //sprite update call
             player.update();
+
+            
         }
     }
 
@@ -85,6 +90,14 @@ class Play extends Phaser.Scene {
                 }
             }
             this.generation();
+        }, null, this);
+    }
+
+    trip(){
+        //trigger some collision animation
+        player.setVelocityX(-80);
+        this.time.delayedCall(1000, () => {
+            player.setVelocity(player.xSpeed);
         }, null, this);
     }
 }
