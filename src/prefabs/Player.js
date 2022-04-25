@@ -24,11 +24,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
       //duck check
       if(keyD.isDown){
-        this.flipX = true;
-        console.log("flip");
+        this.angle = 90;
       }
       else{
-        this.flipX = false;
+        this.angle = 0;
       }
     }
 
