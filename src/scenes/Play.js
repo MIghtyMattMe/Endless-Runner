@@ -16,6 +16,11 @@ class Play extends Phaser.Scene {
     create() {
         this.physics.world.setFPS(60);
 
+        //init music
+        music = this.sound.add('bgm');
+        music.setLoop(true);
+        music.play();
+
         //ground + player creation
         let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding, "ground");
         ground.body.allowGravity = false;
@@ -47,10 +52,12 @@ class Play extends Phaser.Scene {
         keyP.on('down', (event) => {
             if (this.pause) {
                 this.pause = false;
+                music.mute = false;
                 player.setGravityY(1200);
                 player.body.velocity = this.playerVelocity;
             } else {
                 this.pause = true;
+                music.mute = true;
                 for (this.i = 0; this.i < this.obj.length; this.i++) {
                     this.obj[this.i].setVelocityX(0);
                 }
@@ -108,6 +115,7 @@ class Play extends Phaser.Scene {
 
     gameover() {
         //go back to main menu
+        music.mute = true;
         this.scene.start('menuScene');
     }
 }

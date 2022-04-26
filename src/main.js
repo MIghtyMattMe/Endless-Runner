@@ -22,3 +22,6 @@ let keyLEFT, keyRIGHT, keySPACE, keyENTER, keyP, keyD;
 
 //sprite
 let player;
+
+//audio
+let music;

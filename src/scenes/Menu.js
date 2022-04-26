@@ -8,6 +8,9 @@ class Menu extends Phaser.Scene {
         this.load.image("Credits", "./assets/Credits.png");
         this.load.image("Arrow", "./assets/Arrow.png");
         this.load.image("Title", "./assets/Title.png");
+
+        //preload audio
+        this.load.audio('bgm', './assets/audio/bgm.mp3');
     }
 
     create() {
