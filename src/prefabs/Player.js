@@ -5,21 +5,26 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       scene.physics.add.existing(this);
       scene.add.existing(this);
 
-      this.jump = false;
+      this.isJumping = false;
+      this.jumpDisabled = false;
       this.exponential = 2
       this.xSpeed = -3;
     }
 
 
     update() {
+      if(this.jumpDisabled){
+        console.log("can't jump");
+      }
+
       //jump check
-      if(keySPACE.isDown && !this.jump){
+      if(keySPACE.isDown && !this.isJumping && !this.jumpDisabled){
         //console.log("jump");
-        this.jump = true;
+        this.isJumping = true;
         this.setVelocityY(-500);
       }
-      if(this.body.touching.down){
-        this.jump = false;
+      if(this.body.touching.down && !this.jumpDisabled){
+        this.isJumping = false;
       }
 
       //duck check

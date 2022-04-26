@@ -107,8 +107,10 @@ class Play extends Phaser.Scene {
 
     trip(){
         //trigger some collision animation
-        player.setVelocityX(-80);
-        this.time.delayedCall(1000, () => {
+        player.setVelocityX(-100);
+        player.jumpDisabled = true;
+        this.time.delayedCall(500, () => {
+            player.jumpDisabled = false;
             player.setVelocity(player.xSpeed);
         }, null, this);
     }
