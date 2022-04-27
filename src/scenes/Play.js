@@ -19,7 +19,8 @@ class Play extends Phaser.Scene {
         //init music
         music = this.sound.add('bgm');
         music.setLoop(true);
-        music.play();
+        music.play('volume', {volume: 0.5});
+        
 
         //ground + player creation
         let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding, "ground");
