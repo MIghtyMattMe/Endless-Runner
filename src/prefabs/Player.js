@@ -13,9 +13,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
     update() {
-      if(this.jumpDisabled){
-        console.log("can't jump");
-      }
 
       //jump check
       if(keySPACE.isDown && !this.isJumping && !this.jumpDisabled){
