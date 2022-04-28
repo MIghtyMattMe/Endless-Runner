@@ -38,6 +38,7 @@ class Play extends Phaser.Scene {
         this.obs = this.physics.add.group();
         this.spd = this.physics.add.group();
         this.obj = [];
+        this.powers = [];
         this.powerup = false;
         this.objXVelocity = -150;
         this.minTime = 1000;
@@ -86,11 +87,12 @@ class Play extends Phaser.Scene {
             if(this.t%60 == 0){
                 this.ClockTime++;
             }
-            console.log("updating");
+            //console.log("updating");
             //console.log();
 
             //create and move obs
             for (this.i = 0; this.i < this.obj.length; this.i++) {
+                this.obj[this.i].setVelocityX(this.objXVelocity)
                 if (this.obj[this.i].x <= 0) {
                     this.dest = this.obj.splice(0, 1);
                     for (this.j = 0; this.j < this.dest.length; this.j++) {
@@ -98,9 +100,13 @@ class Play extends Phaser.Scene {
                     }
                 }
             }
-            for (this.i in this.spd.getChildren()) {
-                if (this.i.x <= 0) {
-                    this.i.destroy();
+            for (this.i = 0; this.i < this.powers.length; this.i++) {
+                this.powers[this.i].setVelocityX(this.objXVelocity)
+                if (this.powers[this.i].x <= 0) {
+                    this.dest = this.powers.splice(0, 1);
+                    for (this.j = 0; this.j < this.dest.length; this.j++) {
+                        this.dest[this.j].destroy();
+                    }
                     this.powerup = false;
                 } 
             }
@@ -125,7 +131,7 @@ class Play extends Phaser.Scene {
             }
             //console.log("gravity: " + player.gravityVal);
             //console.log("player jump: " + player.jumpForce);
-            console.log("powerup active? : " + this.powerup);
+            //console.log("powerup active? : " + this.powerup);
         }
     }
 
@@ -134,19 +140,19 @@ class Play extends Phaser.Scene {
             if (!this.pause) {
                 let objNum = Phaser.Math.Between(0, 3);
                 if (objNum == 0) {
-                    this.obj.push(this.obs.create(670, 440, 'testObstacle1').setDepth(-1).setVelocityX(this.objXVelocity));
+                    this.obj.push(this.obs.create(670, 440, 'testObstacle1').setDepth(-1));
                 } else if (objNum == 1) {
-                    this.obj.push(this.obs.create(670, 435, 'testObstacle2').setDepth(-1).setVelocityX(this.objXVelocity));
+                    this.obj.push(this.obs.create(670, 435, 'testObstacle2').setDepth(-1));
                 } else if (objNum == 2) {
-                    this.obj.push(this.obs.create(670, 410, 'testObstacle3').setDepth(-1).setVelocityX(this.objXVelocity));
+                    this.obj.push(this.obs.create(670, 410, 'testObstacle3').setDepth(-1));
                 }
                 objNum = Phaser.Math.Between(0, 2);
+                //console.log(this.spd.getChildren())
                 if (objNum == 0 && this.powerup == false) {
-                    this.spd.create(750, 440, 'SpeedUp').setDepth(-1).setVelocityX(-150);
+                    this.powers.push(this.spd.create(750, 440, 'SpeedUp').setDepth(-1));
                     this.powerup = true;
                 }
             }
-            //this.ClockTime += 5;
             this.generation();
         }, null, this);
     }
@@ -164,7 +170,7 @@ class Play extends Phaser.Scene {
     run(){
         //trigger some running animation
         player.setVelocityX(120);
-        this.spd.clear(true, true);
+        this.powers.pop().destroy();
         this.powerup = false
         this.time.delayedCall(300, () => {
             player.setVelocityX(player.xSpeed);
