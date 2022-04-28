@@ -5,10 +5,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       scene.physics.add.existing(this);
       scene.add.existing(this);
 
-      this.isJumping = false;
+      this.isJumping = false;         //true if player is airborne
       this.jumpDisabled = false;
       this.exponential = 2
-      this.xSpeed = -3;
+      this.xSpeed = -3;               //perpetual negative x velocity
+      this.jumpForce = -500;          //negative velocity for jump
+      this.gravityVal = 1200;         //gravity on player
     }
 
 
@@ -18,7 +20,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       if(keySPACE.isDown && !this.isJumping && !this.jumpDisabled){
         //console.log("jump");
         this.isJumping = true;
-        this.setVelocityY(-500);
+        this.setVelocityY(this.jumpForce);
       }
       if(this.body.touching.down && !this.jumpDisabled){
         this.isJumping = false;

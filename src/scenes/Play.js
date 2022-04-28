@@ -20,15 +20,15 @@ class Play extends Phaser.Scene {
         //init music
         music = this.sound.add('bgm');
         music.setLoop(true);
-        music.play('volume', {volume: 0.5});
-        
+        //music.play('volume', {volume: 0.5});
+        //music.play();
 
         //ground + player creation
         let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding, "ground");
         ground.body.allowGravity = false;
         ground.setImmovable();
         player = new Player(this, game.config.width/1.25, game.config.height - borderPadding - borderUISize - ground.height, "pSprite");
-        player.setGravityY(1200);
+        player.setGravityY(player.gravityVal);
         player.setVelocityX(player.xSpeed);
 
         //Monster creation
@@ -39,6 +39,10 @@ class Play extends Phaser.Scene {
         this.spd = this.physics.add.group();
         this.obj = [];
         this.powerup = false;
+        this.objXVelocity = -150;
+        this.minTime = 1000;
+        this.maxTime = 1750;
+        this.t = 0;
         this.generation();
 
         //add colliders
@@ -76,6 +80,15 @@ class Play extends Phaser.Scene {
 
     update() {
         if (this.pause == false) {
+            //independent clock update
+            //++this.t;
+            this.t += 5;
+            if(this.t%60 == 0){
+                this.ClockTime++;
+            }
+            console.log("updating");
+            //console.log();
+
             //create and move obs
             for (this.i = 0; this.i < this.obj.length; this.i++) {
                 if (this.obj[this.i].x <= 0) {
@@ -99,19 +112,33 @@ class Play extends Phaser.Scene {
             this.hours = (String(Math.floor(this.ClockTime/60)).padStart(2, "0"));
             this.minutes = (String(this.ClockTime % 60).padStart(2, "0"));
             this.ClockScore.text = (this.hours + ":" + this.minutes);
+
+            //speeds up the game
+            if(this.minutes == 30){
+                this.objXVelocity--;
+                if(this.minTime > 700){
+                    this.minTime -= 5;
+                    this.maxTime -= 10;
+                    player.jumpForce -= 0.5;
+                    player.gravityVal += 200;
+                }
+            }
+            //console.log("gravity: " + player.gravityVal);
+            //console.log("player jump: " + player.jumpForce);
+            console.log("powerup active? : " + this.powerup);
         }
     }
 
     generation() {
-        this.clock = this.time.delayedCall(Phaser.Math.Between(1000, 1750), () => {
+        this.clock = this.time.delayedCall(Phaser.Math.Between(this.minTime, this.maxTime), () => {
             if (!this.pause) {
                 let objNum = Phaser.Math.Between(0, 3);
                 if (objNum == 0) {
-                    this.obj.push(this.obs.create(670, 440, 'testObstacle1').setDepth(-1).setVelocityX(-150));
+                    this.obj.push(this.obs.create(670, 440, 'testObstacle1').setDepth(-1).setVelocityX(this.objXVelocity));
                 } else if (objNum == 1) {
-                    this.obj.push(this.obs.create(670, 435, 'testObstacle2').setDepth(-1).setVelocityX(-150));
+                    this.obj.push(this.obs.create(670, 435, 'testObstacle2').setDepth(-1).setVelocityX(this.objXVelocity));
                 } else if (objNum == 2) {
-                    this.obj.push(this.obs.create(670, 410, 'testObstacle3').setDepth(-1).setVelocityX(-150));
+                    this.obj.push(this.obs.create(670, 410, 'testObstacle3').setDepth(-1).setVelocityX(this.objXVelocity));
                 }
                 objNum = Phaser.Math.Between(0, 2);
                 if (objNum == 0 && this.powerup == false) {
@@ -119,7 +146,7 @@ class Play extends Phaser.Scene {
                     this.powerup = true;
                 }
             }
-            this.ClockTime += 5;
+            //this.ClockTime += 5;
             this.generation();
         }, null, this);
     }
