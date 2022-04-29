@@ -4,10 +4,11 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("Start", "./assets/Start.png");
-        this.load.image("Credits", "./assets/Credits.png");
-        this.load.image("Arrow", "./assets/Arrow.png");
-        this.load.image("Title", "./assets/Title.png");
+        this.load.image("Start", "./assets/menu/start.png");
+        this.load.image("Credits", "./assets/menu/credits.png");
+        this.load.image("Arrow", "./assets/menu/Arrow.png");
+        this.load.image("Title", "./assets/menu/Title.png");
+        this.load.image("Background", "./assets/menu/menu_screen.png");
 
         //preload audio
         this.load.audio('bgm', './assets/audio/bgm.mp3');
@@ -15,10 +16,11 @@ class Menu extends Phaser.Scene {
 
     create() {
         //load images
-        this.add.image(300, 100, 'Title');
+        this.bg = this.add.tileSprite(0, 0, 640, 480, 'Background').setOrigin(0, 0);
+        this.add.image(300, 120, 'Title');
         this.startButton = this.add.image(200, 300, 'Start');
-        this.creditsButton = this.add.image(400, 300, 'Credits');
-        this.pointer = this.add.image(this.startButton.x - 60, 300, 'Arrow');
+        this.creditsButton = this.add.image(450, 300, 'Credits');
+        this.pointer = this.add.image(this.startButton.x - 80, 300, 'Arrow');
 
         //load instruction text
         this.add.text(100, 350, "space to select/jump, and P to pause\nArrows keys to navigate menu (no credits right now)\n\nSlide + power/speed-up + score/clock to be added");
@@ -40,11 +42,11 @@ class Menu extends Phaser.Scene {
         }
         if(keyLEFT.isDown) {
             this.gaming = true;
-            this.pointer.x = this.startButton.x - 60;
+            this.pointer.x = this.startButton.x - 80;
         }
         if(keyRIGHT.isDown) {
             this.gaming = false;
-            this.pointer.x = this.creditsButton.x - 60;
+            this.pointer.x = this.creditsButton.x - 80;
         }
     }
 }
