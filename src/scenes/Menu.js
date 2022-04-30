@@ -12,6 +12,8 @@ class Menu extends Phaser.Scene {
 
         //preload audio
         this.load.audio('bgm', './assets/audio/bgm.mp3');
+        this.load.audio('move', './assets/audio/MoveCursor.wav');
+        this.load.audio('select', './assets/audio/Select.wav');
     }
 
     create() {
@@ -21,6 +23,10 @@ class Menu extends Phaser.Scene {
         this.startButton = this.add.image(200, 300, 'Start');
         this.creditsButton = this.add.image(450, 300, 'Credits');
         this.pointer = this.add.image(this.startButton.x - 80, 300, 'Arrow');
+
+        //load sounds
+        this.moveSFX = this.sound.add('move');
+        this.selectSFX = this.sound.add('select');
 
         //load instruction text
         this.add.text(100, 350, "space to select/jump, and P to pause\nArrows keys to navigate menu (no credits right now)\n\nSlide + power/speed-up + score/clock to be added");
@@ -32,6 +38,16 @@ class Menu extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+
+        keySPACE.on('down', (event) => {
+            this.selectSFX.play();
+        });
+        keyRIGHT.on('down', (event) => {
+            this.moveSFX.play();
+        });
+        keyLEFT.on('down', (event) => {
+            this.moveSFX.play();
+        });
     }
 
     update() {

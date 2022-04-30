@@ -12,27 +12,53 @@ class Play extends Phaser.Scene {
         this.load.image("testObstacle2", "./assets/testObstacle2.png");
         this.load.image("testObstacle3", "./assets/testObstacle3.png");
         this.load.image("SpeedUp", "./assets/SpeedUp.png");
+
+        this.load.audio('Pause', './assets/audio/Pause.wav');
+        this.load.audio('Jump', './assets/audio/Jump.wav');
+        this.load.audio('Trip', './assets/audio/Trip.wav');
+        this.load.audio('Slide', './assets/audio/Slide.wav');
+
+        this.load.image("background001", "./assets/background/background001.png");
+        this.load.image("background002", "./assets/background/background002.png");
+        this.load.image("background003", "./assets/background/background003.png");
+        this.load.image("background004", "./assets/background/background004.png");
+        this.load.image("background005", "./assets/background/background005.png");
+        this.load.image("background006", "./assets/background/background006.png");
     }
 
     create() {
         this.physics.world.setFPS(60);
 
         //init music
-        music = this.sound.add('bgm');
+        music = this.sound.add('bgm', {volume: 0.5});
         music.setLoop(true);
-        //music.play('volume', {volume: 0.5});
-        //music.play();
+        music.play();
+        music.play();
+
+        //init sound effects
+        this.jumpSFX = this.sound.add('Jump');
+        this.pauseSFX = this.sound.add('Pause');
+        this.slideSFX = this.sound.add('Slide');
+        this.tripSFX = this.sound.add('Trip');
+
+        //background creation
+        /*this.background1 = this.add.tileSprite(0, 0, 640, 480, 'background001').setOrigin(0, 0);
+        this.background2 = this.add.tileSprite(0, 0, 640, 480, 'background002').setOrigin(0, 0);
+        this.background3 = this.add.tileSprite(0, 0, 640, 480, 'background003').setOrigin(0, 0);
+        this.background4 = this.add.tileSprite(0, 0, 640, 480, 'background004').setOrigin(0, 0);
+        this.background5 = this.add.tileSprite(0, 0, 640, 480, 'background005').setOrigin(0, 0);
+        this.background6 = this.add.tileSprite(0, 0, 640, 480, 'background006').setOrigin(0, 0);*/
 
         //ground + player creation
-        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding, "ground");
+        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding, "ground").setDepth(-1);
         ground.body.allowGravity = false;
         ground.setImmovable();
-        player = new Player(this, game.config.width/1.25, game.config.height - borderPadding - borderUISize - ground.height, "pSprite");
+        player = new Player(this, game.config.width/1.25, game.config.height - borderPadding - borderUISize - ground.height, "pSprite").setDepth(1);
         player.setGravityY(player.gravityVal);
         player.setVelocityX(player.xSpeed);
 
         //Monster creation
-        let monster = this.physics.add.sprite(45, game.config.height - borderPadding - 80, "monster");
+        let monster = this.physics.add.sprite(45, game.config.height - borderPadding - 80, "monster").setDepth(1);
 
         //makeing obstacles & power ups
         this.obs = this.physics.add.group();
@@ -57,15 +83,26 @@ class Play extends Phaser.Scene {
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+        //play jump/slide sound
+        keySPACE.on('down', (event) => {
+            this.jumpSFX.play();
+        });
+        keyD.on('down', (event) => {
+            this.slideSFX.play();
+        });
         //pause event
         keyP.on('down', (event) => {
             if (this.pause) {
                 this.pause = false;
-                music.mute = false;
+                music.resume();
+                //music.mute = false;
+                this.pauseSFX.play();
                 this.physics.enableUpdate();
             } else {
                 this.pause = true;
-                music.mute = true;
+                music.pause();
+                //music.mute = true;
+                this.pauseSFX.play();
                 this.physics.disableUpdate();
             }
         });
@@ -81,18 +118,24 @@ class Play extends Phaser.Scene {
 
     update() {
         if (this.pause == false) {
+            //moave background
+            /*this.background1.tilePositionX -= this.objXVelocity * 0.0005;
+            this.background2.tilePositionX -= this.objXVelocity * 0.001;
+            this.background3.tilePositionX -= this.objXVelocity * 0.0015;
+            this.background4.tilePositionX -= this.objXVelocity * 0.002;
+            this.background5.tilePositionX -= this.objXVelocity * 0.003;
+            this.background6.tilePositionX -= this.objXVelocity * 0.003;*/
+
             //independent clock update
-            //++this.t;
-            this.t += 5;
+            ++this.t;
+            //this.t += 5;
             if(this.t%60 == 0){
                 this.ClockTime++;
             }
-            //console.log("updating");
-            //console.log();
 
             //create and move obs
             for (this.i = 0; this.i < this.obj.length; this.i++) {
-                this.obj[this.i].setVelocityX(this.objXVelocity)
+                this.obj[this.i].setVelocityX(this.objXVelocity);
                 if (this.obj[this.i].x <= 0) {
                     this.dest = this.obj.splice(0, 1);
                     for (this.j = 0; this.j < this.dest.length; this.j++) {
@@ -129,9 +172,6 @@ class Play extends Phaser.Scene {
                     player.gravityVal += 200;
                 }
             }
-            //console.log("gravity: " + player.gravityVal);
-            //console.log("player jump: " + player.jumpForce);
-            //console.log("powerup active? : " + this.powerup);
         }
     }
 
@@ -140,16 +180,15 @@ class Play extends Phaser.Scene {
             if (!this.pause) {
                 let objNum = Phaser.Math.Between(0, 3);
                 if (objNum == 0) {
-                    this.obj.push(this.obs.create(670, 440, 'testObstacle1').setDepth(-1));
+                    this.obj.push(this.obs.create(670, 440, 'testObstacle1'));
                 } else if (objNum == 1) {
-                    this.obj.push(this.obs.create(670, 435, 'testObstacle2').setDepth(-1));
+                    this.obj.push(this.obs.create(670, 435, 'testObstacle2'));
                 } else if (objNum == 2) {
-                    this.obj.push(this.obs.create(670, 410, 'testObstacle3').setDepth(-1));
+                    this.obj.push(this.obs.create(670, 410, 'testObstacle3'));
                 }
                 objNum = Phaser.Math.Between(0, 2);
-                //console.log(this.spd.getChildren())
                 if (objNum == 0 && this.powerup == false) {
-                    this.powers.push(this.spd.create(750, 440, 'SpeedUp').setDepth(-1));
+                    this.powers.push(this.spd.create(750, 440, 'SpeedUp'));
                     this.powerup = true;
                 }
             }
@@ -161,6 +200,9 @@ class Play extends Phaser.Scene {
         //trigger some collision animation
         player.setVelocityX(-100);
         player.jumpDisabled = true;
+        if (!this.tripSFX.isPlaying) {
+            this.tripSFX.play();
+        }
         this.time.delayedCall(500, () => {
             player.jumpDisabled = false;
             player.setVelocityX(player.xSpeed);
