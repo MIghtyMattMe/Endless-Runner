@@ -42,23 +42,23 @@ class Play extends Phaser.Scene {
         this.tripSFX = this.sound.add('Trip');
 
         //background creation
-        /*this.background1 = this.add.tileSprite(0, 0, 640, 480, 'background001').setOrigin(0, 0);
-        this.background2 = this.add.tileSprite(0, 0, 640, 480, 'background002').setOrigin(0, 0);
-        this.background3 = this.add.tileSprite(0, 0, 640, 480, 'background003').setOrigin(0, 0);
-        this.background4 = this.add.tileSprite(0, 0, 640, 480, 'background004').setOrigin(0, 0);
-        this.background5 = this.add.tileSprite(0, 0, 640, 480, 'background005').setOrigin(0, 0);
-        this.background6 = this.add.tileSprite(0, 0, 640, 480, 'background006').setOrigin(0, 0);*/
+        this.background1 = this.physics.add.sprite(0, 0, 'background001').setOrigin(0, 0);
+        this.background2 = this.physics.add.sprite(0, 0, 'background002').setOrigin(0, 0);
+        this.background3 = this.physics.add.sprite(0, 0, 'background003').setOrigin(0, 0);
+        this.background4 = this.physics.add.sprite(0, 0, 'background004').setOrigin(0, 0);
+        this.background5 = this.physics.add.sprite(0, 0, 'background005').setOrigin(0, 0);
+        this.background6 = this.physics.add.sprite(0, 0, 'background006').setOrigin(0, 0);
 
         //ground + player creation
-        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding, "ground").setDepth(-1);
+        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding * 3, "ground").setDepth(-1);
         ground.body.allowGravity = false;
         ground.setImmovable();
-        player = new Player(this, game.config.width/1.25, game.config.height - borderPadding - borderUISize - ground.height, "pSprite").setDepth(1);
+        player = new Player(this, game.config.width/1.25, game.config.height - borderPadding * 3 - borderUISize - ground.height, "pSprite").setDepth(1);
         player.setGravityY(player.gravityVal);
         player.setVelocityX(player.xSpeed);
 
         //Monster creation
-        let monster = this.physics.add.sprite(45, game.config.height - borderPadding - 80, "monster").setDepth(1);
+        let monster = this.physics.add.sprite(45, player.y, "monster").setDepth(1);
 
         //makeing obstacles & power ups
         this.obs = this.physics.add.group();
@@ -118,13 +118,29 @@ class Play extends Phaser.Scene {
 
     update() {
         if (this.pause == false) {
-            //moave background
-            /*this.background1.tilePositionX -= this.objXVelocity * 0.0005;
-            this.background2.tilePositionX -= this.objXVelocity * 0.001;
-            this.background3.tilePositionX -= this.objXVelocity * 0.0015;
-            this.background4.tilePositionX -= this.objXVelocity * 0.002;
-            this.background5.tilePositionX -= this.objXVelocity * 0.003;
-            this.background6.tilePositionX -= this.objXVelocity * 0.003;*/
+            //move background
+            this.background1.setVelocityX(this.objXVelocity * 0.2);
+            this.background2.setVelocityX(this.objXVelocity * 0.4);
+            this.background3.setVelocityX(this.objXVelocity * 0.6);
+            this.background4.setVelocityX(this.objXVelocity * 0.8);
+            this.background5.setVelocityX(this.objXVelocity);
+            this.background6.setVelocityX(this.objXVelocity);
+            if (this.background1.x <= -960) {
+                this.background1.x = 0;
+            }
+            if (this.background2.x <= -960) {
+                this.background2.x = 0;
+            }
+            if (this.background3.x <= -960) {
+                this.background3.x = 0;
+            }
+            if (this.background4.x <= -960) {
+                this.background4.x = 0;
+            }
+            if (this.background5.x <= -960) {
+                this.background5.x = 0;
+                this.background6.x = 0;
+            }
 
             //independent clock update
             ++this.t;
@@ -180,15 +196,15 @@ class Play extends Phaser.Scene {
             if (!this.pause) {
                 let objNum = Phaser.Math.Between(0, 3);
                 if (objNum == 0) {
-                    this.obj.push(this.obs.create(670, 440, 'testObstacle1'));
+                    this.obj.push(this.obs.create(670, 412, 'testObstacle1'));
                 } else if (objNum == 1) {
-                    this.obj.push(this.obs.create(670, 435, 'testObstacle2'));
+                    this.obj.push(this.obs.create(670, 412, 'testObstacle2'));
                 } else if (objNum == 2) {
-                    this.obj.push(this.obs.create(670, 410, 'testObstacle3'));
+                    this.obj.push(this.obs.create(670, 412 - 25, 'testObstacle3'));
                 }
                 objNum = Phaser.Math.Between(0, 2);
                 if (objNum == 0 && this.powerup == false) {
-                    this.powers.push(this.spd.create(750, 440, 'SpeedUp'));
+                    this.powers.push(this.spd.create(750, 412, 'SpeedUp'));
                     this.powerup = true;
                 }
             }
