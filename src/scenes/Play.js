@@ -113,6 +113,7 @@ class Play extends Phaser.Scene {
         this.hours = (String(Math.floor(this.ClockTime/60)).padStart(2, "0"));
         this.minutes = (String(this.ClockTime % 60).padStart(2, "0"));
         this.ClockScore = this.add.text(550, 30, this.hours + ":" + this.minutes);
+        this.gameup = false;
 
     }
 
@@ -143,7 +144,7 @@ class Play extends Phaser.Scene {
             }
 
             //independent clock update
-            ++this.t;
+            this.t += 0.5;
             //this.t += 5;
             if(this.t%60 == 0){
                 this.ClockTime++;
@@ -179,14 +180,18 @@ class Play extends Phaser.Scene {
             this.ClockScore.text = (this.hours + ":" + this.minutes);
 
             //speeds up the game
-            if(this.minutes == 30){
-                this.objXVelocity--;
-                if(this.minTime > 700){
-                    this.minTime -= 5;
-                    this.maxTime -= 10;
+            if((this.minutes == 30) && (!this.gameup)){
+                this.gameup = true;
+                if(this.minTime > 500){
+                    this.objXVelocity -= 40;
+                    this.minTime -= 110;
+                    this.maxTime -= 220;
                     player.jumpForce -= 0.5;
                     player.gravityVal += 200;
                 }
+                this.clock = this.time.delayedCall(500, () => {
+                    this.gameup = false;
+                });
             }
         }
     }

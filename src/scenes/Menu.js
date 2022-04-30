@@ -40,7 +40,7 @@ class Menu extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 
         keySPACE.on('down', (event) => {
-            this.selectSFX.play();
+            //this.selectSFX.play();
         });
         keyRIGHT.on('down', (event) => {
             this.moveSFX.play();
