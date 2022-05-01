@@ -61,7 +61,7 @@ class Menu extends Phaser.Scene {
         if(keySPACE.isDown && this.gaming) {
             this.scene.start('playScene');
         } else if (keySPACE.isDown) {
-            //go to credits (doesn't exist right now)
+            this.scene.start('creditsScene');
         }
         if(keyLEFT.isDown) {
             this.gaming = true;
