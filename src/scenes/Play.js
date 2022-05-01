@@ -71,7 +71,7 @@ class Play extends Phaser.Scene {
 
         //Monster creation
         this.anims.create({key: 'monsterMovement', frames: this.anims.generateFrameNames('monster', {prefix: 'blob', end: 19, zeroPad:3}), frameRate: 10, repeat: -1});
-        monster = this.physics.add.sprite(70, this.top, "monster").setDepth(1);
+        monster = this.physics.add.sprite(70, 320, "monster").setDepth(1);
 
         //makeing obstacles & power ups
         this.obs = this.physics.add.group();
@@ -96,16 +96,34 @@ class Play extends Phaser.Scene {
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
+        let s = false;
+        let j = false;
         //play jump/slide sound
         keySPACE.on('down', (event) => {
-            this.jumpSFX.play();
+            if (!s) {
+                j = true;
+                this.jumpSFX.play();
+            }
+        });
+        keySPACE.on('up', (event) => {
+            if (!s) {
+                j = false;
+                player.anims.play("running", true);
+            }
         });
         keyS.on('down', (event) => {
-            this.slideSFX.play();
+            if (!j) {
+                s = true;
+                this.slideSFX.play();
+                player.anims.play('slide', true);
+            }
         });
         keyS.on('up', (event) => {
-            player.anims.play("running", true);
-            player.y -= 50;
+            if (!j) {
+                s = false;
+                player.anims.play("running", true);
+                player.y -= 10;
+            }
         });
         //pause event
         keyP.on('down', (event) => {
@@ -133,9 +151,9 @@ class Play extends Phaser.Scene {
         this.gameup = false;
 
         //making instuctions
-        this.add.image(190, 420, "jump_int").setOrigin(0, 0).scale = 0.2;
-        this.add.image(300, 420, "slide_int").setOrigin(0, 0).scale = 0.2;
-        this.add.image(390, 420, "pause_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(190, 10, "jump_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(300, 10, "slide_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(390, 10, "pause_int").setOrigin(0, 0).scale = 0.2;
     }
 
     update() {
@@ -243,9 +261,6 @@ class Play extends Phaser.Scene {
 
     trip(){
         player.setVelocityX(-100);
-        if (keyS.isDown && !player.jumpDisabled) {
-            player.y -= 50;
-        }
         player.jumpDisabled = true;
         if (!this.tripSFX.isPlaying) {
             this.tripSFX.play();
