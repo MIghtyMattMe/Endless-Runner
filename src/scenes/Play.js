@@ -56,21 +56,22 @@ class Play extends Phaser.Scene {
         this.background6 = this.physics.add.sprite(0, 0, 'background006').setOrigin(0, 0);
 
         //ground + player creation
-        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding * 7, "ground").setDepth(3);
+        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding * 10, "ground").setDepth(-1);
         ground.body.allowGravity = false;
         ground.setImmovable();
-        this.height = game.config.height - borderPadding * 10 - ground.height - borderUISize;
-        this.anims.create({key: "running", frames: this.anims.generateFrameNames('pSprite', {prefix: 'walk', end: 1, zeroPad:2}), frameRate: 20, repeat: -1});
+        this.top = game.config.height - borderPadding * 10 - ground.height;
+        this.anims.create({key: "running", frames: this.anims.generateFrameNames('pSprite', {prefix: 'walk', end: 1, zeroPad:2}), frameRate: 5, repeat: -1});
         this.anims.create({key: "jump", frames: this.anims.generateFrameNames('pSprite', {prefix: 'jump', end: 0, zeroPad:1}), repeat: -1});
         this.anims.create({key: "slide", frames: this.anims.generateFrameNames('pSprite', {prefix: 'slide', end: 0, zeroPad:1}), repeat: -1});
-        player = new Player(this, game.config.width/1.25, 100, "pSprite").setOrigin(0,0).setDepth(1);
-        //player.setSize(60,60);
+        player = new Player(this, game.config.width/1.25, this.top - 200, "pSprite").setDepth(1);
+        player.anims.play("running", true);
+        player.setSize();
         player.setGravityY(player.gravityVal);
         player.setVelocityX(player.xSpeed);
 
         //Monster creation
-        this.anims.create({key: 'monsterMovement', frames: this.anims.generateFrameNames('monster', {prefix: 'blob', end: 19, zeroPad:3}), frameRate: 20, repeat: -1});
-        monster = this.physics.add.sprite(70, 100, "monster").setOrigin(0,0).setDepth(1);
+        this.anims.create({key: 'monsterMovement', frames: this.anims.generateFrameNames('monster', {prefix: 'blob', end: 19, zeroPad:3}), frameRate: 10, repeat: -1});
+        monster = this.physics.add.sprite(70, this.top, "monster").setDepth(1);
 
         //makeing obstacles & power ups
         this.obs = this.physics.add.group();
@@ -101,6 +102,10 @@ class Play extends Phaser.Scene {
         });
         keyS.on('down', (event) => {
             this.slideSFX.play();
+        });
+        keyS.on('up', (event) => {
+            player.anims.play("running", true);
+            player.y -= 50;
         });
         //pause event
         keyP.on('down', (event) => {
@@ -220,15 +225,15 @@ class Play extends Phaser.Scene {
             if (!this.pause) {
                 let objNum = Phaser.Math.Between(0, 3);
                 if (objNum == 0) {
-                    this.obj.push(this.obs.create(670, this.height + borderPadding * 2, 'testObstacle1'));
+                    this.obj.push(this.obs.create(670, this.top, 'testObstacle1'));
                 } else if (objNum == 1) {
-                    this.obj.push(this.obs.create(670, this.height + borderPadding * 2, 'testObstacle2'));
+                    this.obj.push(this.obs.create(670, this.top, 'testObstacle2'));
                 } else if (objNum == 2) {
-                    this.obj.push(this.obs.create(670, this.height - 30, 'testObstacle3'));
+                    this.obj.push(this.obs.create(670, this.top - 40, 'testObstacle3'));
                 }
                 objNum = Phaser.Math.Between(0, 2);
                 if (objNum == 0 && this.powerup == false) {
-                    this.powers.push(this.spd.create(750, 412, 'SpeedUp'));
+                    this.powers.push(this.spd.create(750, this.top, 'SpeedUp'));
                     this.powerup = true;
                 }
             }
@@ -237,8 +242,10 @@ class Play extends Phaser.Scene {
     }
 
     trip(){
-        //trigger some collision animation
         player.setVelocityX(-100);
+        if (keyS.isDown && !player.jumpDisabled) {
+            player.y -= 50;
+        }
         player.jumpDisabled = true;
         if (!this.tripSFX.isPlaying) {
             this.tripSFX.play();
