@@ -82,7 +82,7 @@ class Play extends Phaser.Scene {
         this.powerup = false;
         this.objXVelocity = -150;
         this.minTime = 1000;
-        this.maxTime = 1750;
+        this.maxTime = 1700;
         this.t = 0;
         this.anims.create({key: 'spinCoin', frames: this.anims.generateFrameNames('SpeedUp', {prefix: 'coin', end: 5, zeroPad:3}), frameRate: 15, repeat:-1});
         this.generation();
