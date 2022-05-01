@@ -12,6 +12,7 @@ class Menu extends Phaser.Scene {
 
         //preload audio
         this.load.audio('bgm', './assets/audio/bgm.mp3');
+        this.load.audio('menu_bgm', './assets/audio/menu_bgm.mp3');
         this.load.audio('move', './assets/audio/MoveCursor.wav');
         this.load.audio('select', './assets/audio/Select.wav');
 
@@ -30,6 +31,9 @@ class Menu extends Phaser.Scene {
         this.pointer = this.add.image(this.startButton.x - 80, 300, 'Arrow');
 
         //load sounds
+        menu_music = this.sound.add('menu_bgm', {volume: 0.5});
+        menu_music.setLoop(true);
+        menu_music.play();
         this.moveSFX = this.sound.add('move');
         this.selectSFX = this.sound.add('select');
 
@@ -59,6 +63,7 @@ class Menu extends Phaser.Scene {
 
     update() {
         if(keySPACE.isDown && this.gaming) {
+            menu_music.mute = true;
             this.scene.start('playScene');
         } else if (keySPACE.isDown) {
             this.scene.start('creditsScene');

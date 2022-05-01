@@ -24,4 +24,4 @@ let keyLEFT, keyRIGHT, keySPACE, keyENTER, keyP, keyS;
 let player, monster;
 
 //audio
-let music;
+let music, menu_music;
