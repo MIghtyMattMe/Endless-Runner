@@ -14,6 +14,11 @@ class Menu extends Phaser.Scene {
         this.load.audio('bgm', './assets/audio/bgm.mp3');
         this.load.audio('move', './assets/audio/MoveCursor.wav');
         this.load.audio('select', './assets/audio/Select.wav');
+
+        //preload instructions
+        this.load.image("right_int", "./assets/Instruct/RightInt.png");
+        this.load.image("left_int", "./assets/Instruct/LeftInt.png");
+        this.load.image("select_int", "./assets/Instruct/SelectInt.png");
     }
 
     create() {
@@ -27,9 +32,6 @@ class Menu extends Phaser.Scene {
         //load sounds
         this.moveSFX = this.sound.add('move');
         this.selectSFX = this.sound.add('select');
-
-        //load instruction text
-        this.add.text(100, 350, "Use arrow keys to choose where to go and space to select");
 
         //gaming keeps track of if we load Play or not
         this.gaming = true;
@@ -48,6 +50,11 @@ class Menu extends Phaser.Scene {
         keyLEFT.on('down', (event) => {
             this.moveSFX.play();
         });
+
+        //add int images
+        this.add.image(180, 380, "select_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(290, 380, "left_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(380, 380, "right_int").setOrigin(0, 0).scale = 0.2;
     }
 
     update() {
