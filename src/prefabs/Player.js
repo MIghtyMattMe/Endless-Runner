@@ -9,7 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.jumpDisabled = false;
       this.exponential = 2
       this.xSpeed = -5;               //perpetual negative x velocity
-      this.jumpForce = -500;          //negative velocity for jump
+      this.jumpForce = -510;          //negative velocity for jump
       this.gravityVal = 1400;         //gravity on player
     }
 
