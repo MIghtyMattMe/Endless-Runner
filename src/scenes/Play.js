@@ -24,6 +24,10 @@ class Play extends Phaser.Scene {
         this.load.image("background004", "./assets/background/background004.png");
         this.load.image("background005", "./assets/background/background005.png");
         this.load.image("background006", "./assets/background/background006.png");
+
+        this.load.image("jump_int", "./assets/Instruct/JumpInt.png");
+        this.load.image("slide_int", "./assets/Instruct/SlideInt.png");
+        this.load.image("pause_int", "./assets/Instruct/PauseInt.png");
     }
 
     create() {
@@ -115,6 +119,10 @@ class Play extends Phaser.Scene {
         this.ClockScore = this.add.text(550, 30, this.hours + ":" + this.minutes);
         this.gameup = false;
 
+        //making instuctions
+        this.add.image(140, 420, "jump_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(220, 420, "slide_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(300, 420, "pause_int").setOrigin(0, 0).scale = 0.2;
     }
 
     update() {

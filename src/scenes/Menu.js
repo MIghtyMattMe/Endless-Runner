@@ -29,7 +29,7 @@ class Menu extends Phaser.Scene {
         this.selectSFX = this.sound.add('select');
 
         //load instruction text
-        this.add.text(100, 350, "space to select/jump, and P to pause\nArrows keys to navigate menu (no credits right now)\n\nSlide + power/speed-up + score/clock to be added");
+        this.add.text(100, 350, "Use arrow keys to choose where to go and space to select");
 
         //gaming keeps track of if we load Play or not
         this.gaming = true;
