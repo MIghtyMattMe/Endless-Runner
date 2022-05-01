@@ -35,7 +35,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       if(keyS.isDown && !this.isJumping && !this.jumpDisabled){
         //this.angle = 90;
         //this.setVelocityY(-100);
-        this.setSize(10, 10);
+        //this.setSize(10, 10);
         this.isJumping = true;
         //this.y = game.config.height - borderPadding * 10 - 41;
         this.anims.play('slide', true);
