@@ -56,19 +56,21 @@ class Play extends Phaser.Scene {
         this.background6 = this.physics.add.sprite(0, 0, 'background006').setOrigin(0, 0);
 
         //ground + player creation
-        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding * 10, "ground").setDepth(-1);
+        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding * 7, "ground").setDepth(3);
         ground.body.allowGravity = false;
         ground.setImmovable();
+        this.height = game.config.height - borderPadding * 10 - ground.height - borderUISize;
         this.anims.create({key: "running", frames: this.anims.generateFrameNames('pSprite', {prefix: 'walk', end: 1, zeroPad:2}), frameRate: 20, repeat: -1});
         this.anims.create({key: "jump", frames: this.anims.generateFrameNames('pSprite', {prefix: 'jump', end: 0, zeroPad:1}), repeat: -1});
         this.anims.create({key: "slide", frames: this.anims.generateFrameNames('pSprite', {prefix: 'slide', end: 0, zeroPad:1}), repeat: -1});
-        player = new Player(this, game.config.width/1.25, game.config.height - borderPadding * 10 - ground.height, "pSprite").setDepth(1);
+        player = new Player(this, game.config.width/1.25, 100, "pSprite").setOrigin(0,0).setDepth(1);
+        //player.setSize(60,60);
         player.setGravityY(player.gravityVal);
         player.setVelocityX(player.xSpeed);
 
         //Monster creation
         this.anims.create({key: 'monsterMovement', frames: this.anims.generateFrameNames('monster', {prefix: 'blob', end: 19, zeroPad:3}), frameRate: 20, repeat: -1});
-        monster = this.physics.add.sprite(70, player.y, "monster");//.setDepth(1);
+        monster = this.physics.add.sprite(70, 100, "monster").setOrigin(0,0).setDepth(1);
 
         //makeing obstacles & power ups
         this.obs = this.physics.add.group();
@@ -91,13 +93,13 @@ class Play extends Phaser.Scene {
         //jump and pause keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         //play jump/slide sound
         keySPACE.on('down', (event) => {
             this.jumpSFX.play();
         });
-        keyD.on('down', (event) => {
+        keyS.on('down', (event) => {
             this.slideSFX.play();
         });
         //pause event
@@ -126,9 +128,9 @@ class Play extends Phaser.Scene {
         this.gameup = false;
 
         //making instuctions
-        this.add.image(140, 420, "jump_int").setOrigin(0, 0).scale = 0.2;
-        this.add.image(220, 420, "slide_int").setOrigin(0, 0).scale = 0.2;
-        this.add.image(300, 420, "pause_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(190, 420, "jump_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(300, 420, "slide_int").setOrigin(0, 0).scale = 0.2;
+        this.add.image(390, 420, "pause_int").setOrigin(0, 0).scale = 0.2;
     }
 
     update() {
@@ -218,11 +220,11 @@ class Play extends Phaser.Scene {
             if (!this.pause) {
                 let objNum = Phaser.Math.Between(0, 3);
                 if (objNum == 0) {
-                    this.obj.push(this.obs.create(670, game.config.height - borderPadding*10, 'testObstacle1'));
+                    this.obj.push(this.obs.create(670, this.height + borderPadding * 2, 'testObstacle1'));
                 } else if (objNum == 1) {
-                    this.obj.push(this.obs.create(670, 412, 'testObstacle2'));
+                    this.obj.push(this.obs.create(670, this.height + borderPadding * 2, 'testObstacle2'));
                 } else if (objNum == 2) {
-                    this.obj.push(this.obs.create(670, 412 - 25, 'testObstacle3'));
+                    this.obj.push(this.obs.create(670, this.height - 30, 'testObstacle3'));
                 }
                 objNum = Phaser.Math.Between(0, 2);
                 if (objNum == 0 && this.powerup == false) {

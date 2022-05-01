@@ -5,7 +5,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false,
+            debug: true,
             fps: 60
         }
     },
@@ -18,7 +18,7 @@ let game = new Phaser.Game(config);
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 //keyboard vars
-let keyLEFT, keyRIGHT, keySPACE, keyENTER, keyP, keyD;
+let keyLEFT, keyRIGHT, keySPACE, keyENTER, keyP, keyS;
 
 //sprite
 let player, monster;

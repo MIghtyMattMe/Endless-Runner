@@ -32,13 +32,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       }
 
       //duck check
-      if(keyD.isDown){
+      if(keyS.isDown && !this.isJumping && !this.jumpDisabled){
         //this.angle = 90;
         //this.setVelocityY(-100);
-        this.y = game.config.height - borderPadding * 10 - 41;
+        this.setSize(10, 10);
+        this.isJumping = true;
+        //this.y = game.config.height - borderPadding * 10 - 41;
         this.anims.play('slide', true);
       }
       else{
+        //this.setSize(60, 60);
         //this.angle = 0;
       }
     }
