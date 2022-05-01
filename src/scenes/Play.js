@@ -4,9 +4,11 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("pSprite", "./assets/player.png");
+        //this.load.image("pSprite", "./assets/player.png");
+        this.load.atlas("pSprite", "./assets/player/player.png", "./assets/player/playerSprites.json");
         this.load.image("ground", "./assets/ground.png");
-        this.load.image("monster", "./assets/Monster.png");
+        //this.load.image("monster", "./assets/Monster.png");
+        this.load.atlas("monster", "./assets/monster/blob.png", "./assets/monster/blobSprite.json");
 
         this.load.image("testObstacle1", "./assets/testObstacle1.png");
         this.load.image("testObstacle2", "./assets/testObstacle2.png");
@@ -36,8 +38,8 @@ class Play extends Phaser.Scene {
         //init music
         music = this.sound.add('bgm', {volume: 0.5});
         music.setLoop(true);
-        music.play();
-        music.play();
+        //music.play();
+        //music.play();
 
         //init sound effects
         this.jumpSFX = this.sound.add('Jump');
@@ -54,15 +56,19 @@ class Play extends Phaser.Scene {
         this.background6 = this.physics.add.sprite(0, 0, 'background006').setOrigin(0, 0);
 
         //ground + player creation
-        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding * 3, "ground").setDepth(-1);
+        let ground = this.physics.add.sprite(game.config.width/2, game.config.height - borderPadding * 10, "ground").setDepth(-1);
         ground.body.allowGravity = false;
         ground.setImmovable();
-        player = new Player(this, game.config.width/1.25, game.config.height - borderPadding * 3 - borderUISize - ground.height, "pSprite").setDepth(1);
+        this.anims.create({key: "running", frames: this.anims.generateFrameNames('pSprite', {prefix: 'walk', end: 1, zeroPad:2}), frameRate: 20, repeat: -1});
+        this.anims.create({key: "jump", frames: this.anims.generateFrameNames('pSprite', {prefix: 'jump', end: 0, zeroPad:1}), repeat: -1});
+        this.anims.create({key: "slide", frames: this.anims.generateFrameNames('pSprite', {prefix: 'slide', end: 0, zeroPad:1}), repeat: -1});
+        player = new Player(this, game.config.width/1.25, game.config.height - borderPadding * 10 - ground.height, "pSprite").setDepth(1);
         player.setGravityY(player.gravityVal);
         player.setVelocityX(player.xSpeed);
 
         //Monster creation
-        let monster = this.physics.add.sprite(45, player.y, "monster").setDepth(1);
+        this.anims.create({key: 'monsterMovement', frames: this.anims.generateFrameNames('monster', {prefix: 'blob', end: 19, zeroPad:3}), frameRate: 20, repeat: -1});
+        monster = this.physics.add.sprite(70, player.y, "monster");//.setDepth(1);
 
         //makeing obstacles & power ups
         this.obs = this.physics.add.group();
@@ -187,6 +193,9 @@ class Play extends Phaser.Scene {
             this.minutes = (String(this.ClockTime % 60).padStart(2, "0"));
             this.ClockScore.text = (this.hours + ":" + this.minutes);
 
+            //monster animation
+            monster.anims.play("monsterMovement", true);
+
             //speeds up the game
             if((this.minutes == 30) && (!this.gameup)){
                 this.gameup = true;
@@ -209,7 +218,7 @@ class Play extends Phaser.Scene {
             if (!this.pause) {
                 let objNum = Phaser.Math.Between(0, 3);
                 if (objNum == 0) {
-                    this.obj.push(this.obs.create(670, 412, 'testObstacle1'));
+                    this.obj.push(this.obs.create(670, game.config.height - borderPadding*10, 'testObstacle1'));
                 } else if (objNum == 1) {
                     this.obj.push(this.obs.create(670, 412, 'testObstacle2'));
                 } else if (objNum == 2) {
