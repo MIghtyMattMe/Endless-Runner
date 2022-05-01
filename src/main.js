@@ -21,7 +21,7 @@ let borderPadding = borderUISize / 3;
 let keyLEFT, keyRIGHT, keySPACE, keyENTER, keyP, keyD;
 
 //sprite
-let player;
+let player, monster;
 
 //audio
 let music;
