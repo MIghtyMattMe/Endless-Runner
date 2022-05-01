@@ -13,7 +13,8 @@ class Play extends Phaser.Scene {
         this.load.image("testObstacle1", "./assets/testObstacle1.png");
         this.load.image("testObstacle2", "./assets/testObstacle2.png");
         this.load.image("testObstacle3", "./assets/testObstacle3.png");
-        this.load.image("SpeedUp", "./assets/SpeedUp.png");
+        //this.load.image("SpeedUp", "./assets/SpeedUp.png");
+        this.load.atlas("SpeedUp", "./assets/obstacles/coin.png", "./assets/obstacles/coinSprites.json");
 
         this.load.audio('Pause', './assets/audio/Pause.wav');
         this.load.audio('Jump', './assets/audio/Jump.wav');
@@ -83,6 +84,7 @@ class Play extends Phaser.Scene {
         this.minTime = 1000;
         this.maxTime = 1750;
         this.t = 0;
+        this.anims.create({key: 'spinCoin', frames: this.anims.generateFrameNames('SpeedUp', {prefix: 'coin', end: 5, zeroPad:3}), frameRate: 15, repeat:-1});
         this.generation();
 
         //add colliders
@@ -223,16 +225,18 @@ class Play extends Phaser.Scene {
 
             //monster animation
             monster.anims.play("monsterMovement", true);
+            //speed up anim
+            //this.game.anims.play('spinCoin', true);
 
             //speeds up the game
-            if((this.minutes == 15) && (!this.gameup)){
+            if((this.minutes != 0 && this.minutes%15 == 0) && (!this.gameup)){
                 this.gameup = true;
-                if(this.minTime > 500){
+                if(this.minTime > 700){
                     this.objXVelocity -= 20;
-                    this.minTime -= 110;
-                    this.maxTime -= 220;
+                    this.minTime -= 50;
+                    this.maxTime -= 150;
                     player.jumpForce -= 0.25;
-                    player.gravityVal += 80;
+                    player.gravityVal += 90;
                     player.setGravityY(player.gravityVal);
                 }
                 this.clock = this.time.delayedCall(500, () => {
@@ -255,7 +259,7 @@ class Play extends Phaser.Scene {
                 }
                 objNum = Phaser.Math.Between(0, 2);
                 if (objNum == 0 && this.powerup == false) {
-                    this.powers.push(this.spd.create(750, this.top, 'SpeedUp'));
+                    this.powers.push(this.spd.create(750, this.top, 'SpeedUp').play('spinCoin', true));
                     this.powerup = true;
                 }
             }
