@@ -10,7 +10,16 @@
             background-color: black;
         }
     </style>
-    <link rel="preload" as="font" href="assets/fonts/Open 24 Display St.ttf" type="font/ttf">
+    <link rel="create" as="font" href="assets/fonts/Open24DisplaySt.ttf" type="font/ttf">
+    <style media='screen' type='text/css'>
+        @font-face {
+          font-family: Digital;
+          src: url('assets/fonts/Open24DisplaySt.ttf');
+          font-weight:200;
+          font-weight:normal;
+        }
+    </style>
+    <div style="font-family:Digital; position:absolute; left:-1000px; visibility:hidden;">.</div>
 </head>
 <body>
     <script src="./lib/phaser.js"></script>
