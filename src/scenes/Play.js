@@ -147,7 +147,7 @@ class Play extends Phaser.Scene {
         this.ClockTime = 600;
         this.hours = (String(Math.floor(this.ClockTime/60)).padStart(2, "0"));
         this.minutes = (String(this.ClockTime % 60).padStart(2, "0"));
-        this.ClockScore = this.add.text(550, 30, this.hours + ":" + this.minutes);
+        this.ClockScore = this.add.text(550, 30, this.hours + ":" + this.minutes).setFont('LCD').setFontSize(20);
         this.gameup = false;
 
         //making instuctions
