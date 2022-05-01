@@ -157,6 +157,9 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        if (player.y > (monster.y + 10)) {
+            player.y = monster.y - 20;
+        }
         if (this.pause == false) {
             //move background
             this.background1.setVelocityX(this.objXVelocity * 0.2);
