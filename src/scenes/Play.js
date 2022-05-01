@@ -225,14 +225,15 @@ class Play extends Phaser.Scene {
             monster.anims.play("monsterMovement", true);
 
             //speeds up the game
-            if((this.minutes == 30) && (!this.gameup)){
+            if((this.minutes == 15) && (!this.gameup)){
                 this.gameup = true;
                 if(this.minTime > 500){
-                    this.objXVelocity -= 40;
+                    this.objXVelocity -= 20;
                     this.minTime -= 110;
                     this.maxTime -= 220;
-                    player.jumpForce -= 0.5;
-                    player.gravityVal += 200;
+                    player.jumpForce -= 0.25;
+                    player.gravityVal += 80;
+                    player.setGravityY(player.gravityVal);
                 }
                 this.clock = this.time.delayedCall(500, () => {
                     this.gameup = false;
