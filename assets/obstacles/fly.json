@@ -1,0 +1,4 @@
+{"frames":[
+        {"filename":"fly00","frame":{"x":0,"y":0,"w":145,"h":145},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":145,"h":145},"sourceSize":{"w":145,"h":145}},
+        {"filename":"fly01","frame":{"x":145,"y":0,"w":145,"h":145},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":145,"h":145},"sourceSize":{"w":145,"h":145}}],
+        "meta":{"app":"https://www.leshylabs.com/apps/sstool/","version":"Leshy SpriteSheet Tool v0.8.4","image":"spritesheet.png","size":{"w":290,"h":145},"scale":1}}

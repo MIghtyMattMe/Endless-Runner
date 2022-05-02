@@ -8,9 +8,10 @@ class Play extends Phaser.Scene {
         this.load.image("ground", "./assets/ground.png");
         this.load.atlas("monster", "./assets/monster/blob.png", "./assets/monster/blobSprite.json");
 
-        this.load.image("testObstacle1", "./assets/testObstacle1.png");
-        this.load.image("testObstacle2", "./assets/testObstacle2.png");
-        this.load.image("testObstacle3", "./assets/testObstacle3.png");
+        this.load.image("rock", "./assets/obstacles/rock.png");
+        this.load.image("log", "./assets/obstacles/log.png");
+        this.load.image("stump", "./assets/obstacles/stump.png");
+        this.load.atlas("bat", "./assets/obstacles/bat.png", "./assets/obstacles/fly.json");
         this.load.atlas("SpeedUp", "./assets/obstacles/coin.png", "./assets/obstacles/coinSprites.json");
 
         this.load.audio('Pause', './assets/audio/Pause.wav');
@@ -68,9 +69,10 @@ class Play extends Phaser.Scene {
         player.setGravityY(player.gravityVal);
         player.setVelocityX(player.xSpeed);
 
-        //Monster creation
+        //Monster + bat creation
         this.anims.create({key: 'monsterMovement', frames: this.anims.generateFrameNames('monster', {prefix: 'blob', end: 19, zeroPad:3}), frameRate: 10, repeat: -1});
         monster = this.physics.add.sprite(70, 320, "monster").setDepth(1);
+        this.anims.create({key: "flying", frames: this.anims.generateFrameNames('bat', {prefix: 'fly', end: 1, zeroPad:2}), frameRate: 4, repeat: -1});
 
         //makeing obstacles & power ups
         this.obs = this.physics.add.group();
@@ -78,7 +80,7 @@ class Play extends Phaser.Scene {
         this.obj = [];
         this.powers = [];
         this.powerup = false;
-        this.objXVelocity = -170;
+        this.objXVelocity = -180;
         this.minTime = 1000;
         this.maxTime = 1700;
         this.t = 0;
@@ -187,14 +189,13 @@ class Play extends Phaser.Scene {
 
             //independent clock update
             this.t += 0.5;
-            //this.t += 5;
             if(this.t%60 == 0){
                 this.ClockTime++;
             }
 
             //create and move obs
             for (this.i = 0; this.i < this.obj.length; this.i++) {
-                this.obj[this.i].setSize(this.obj[this.i].width/2, this.obj[this.i].height)
+                this.obj[this.i].setSize(this.obj[this.i].width/3, this.obj[this.i].height/2)
                 this.obj[this.i].setVelocityX(this.objXVelocity);
                 if (this.obj[this.i].x <= 0) {
                     this.dest = this.obj.splice(0, 1);
@@ -248,13 +249,15 @@ class Play extends Phaser.Scene {
     generation() {
         this.clock = this.time.delayedCall(Phaser.Math.Between(this.minTime, this.maxTime), () => {
             if (!this.pause) {
-                let objNum = Phaser.Math.Between(0, 3);
+                let objNum = Phaser.Math.Between(0, 4);
                 if (objNum == 0) {
-                    this.obj.push(this.obs.create(670, this.top, 'testObstacle1'));
+                    this.obj.push(this.obs.create(670, this.top, 'rock').setScale(0.5));
                 } else if (objNum == 1) {
-                    this.obj.push(this.obs.create(670, this.top, 'testObstacle2'));
+                    this.obj.push(this.obs.create(670, this.top, 'log').setScale(0.5));
                 } else if (objNum == 2) {
-                    this.obj.push(this.obs.create(670, this.top - 40, 'testObstacle3'));
+                    this.obj.push(this.obs.create(670, this.top, 'stump').setScale(0.5));
+                } else if (objNum == 3) {
+                    this.obj.push(this.obs.create(670, this.top - 50, 'bat').play('flying', true).setScale(0.5));
                 }
                 objNum = Phaser.Math.Between(0, 4);
                 if (objNum == 0 && this.powerup == false) {
@@ -268,7 +271,6 @@ class Play extends Phaser.Scene {
 
     trip(){
         player.setVelocityX(-80);
-        //player.jumpDisabled = true;
         if (!this.tripSFX.isPlaying && !player.jumpDisabled) {
             this.tripSFX.play();
         }
@@ -280,7 +282,6 @@ class Play extends Phaser.Scene {
     }
 
     run(){
-        //trigger some running animation
         player.setVelocityX(120);
         this.powers.pop().destroy();
         this.powerup = false
