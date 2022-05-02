@@ -4,16 +4,13 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        //this.load.image("pSprite", "./assets/player.png");
         this.load.atlas("pSprite", "./assets/player/player.png", "./assets/player/playerSprites.json");
         this.load.image("ground", "./assets/ground.png");
-        //this.load.image("monster", "./assets/Monster.png");
         this.load.atlas("monster", "./assets/monster/blob.png", "./assets/monster/blobSprite.json");
 
         this.load.image("testObstacle1", "./assets/testObstacle1.png");
         this.load.image("testObstacle2", "./assets/testObstacle2.png");
         this.load.image("testObstacle3", "./assets/testObstacle3.png");
-        //this.load.image("SpeedUp", "./assets/SpeedUp.png");
         this.load.atlas("SpeedUp", "./assets/obstacles/coin.png", "./assets/obstacles/coinSprites.json");
 
         this.load.audio('Pause', './assets/audio/Pause.wav');
@@ -36,11 +33,12 @@ class Play extends Phaser.Scene {
     create() {
         this.physics.world.setFPS(60);
 
+        this.cameras.main.fadeIn(1000);
+
         //init music
         music = this.sound.add('bgm', {volume: 0.5});
         music.setLoop(true);
         music.play();
-        //music.play();
 
         //init sound effects
         this.jumpSFX = this.sound.add('Jump');

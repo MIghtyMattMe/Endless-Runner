@@ -9,7 +9,7 @@ class Menu extends Phaser.Scene {
         this.load.image("Arrow", "./assets/menu/Arrow.png");
         this.load.image("Title", "./assets/menu/Title.png");
         this.load.image("Background", "./assets/menu/menu_screen.png");
-
+        
         //preload audio
         this.load.audio('bgm', './assets/audio/bgm.mp3');
         this.load.audio('menu_bgm', './assets/audio/menu_bgm.mp3');
@@ -23,13 +23,15 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
+        this.cameras.main.fadeIn(1000);
+
         //load images
         this.bg = this.add.tileSprite(0, 0, 640, 480, 'Background').setOrigin(0, 0);
         this.add.image(300, 120, 'Title');
         this.startButton = this.add.image(200, 300, 'Start');
         this.creditsButton = this.add.image(450, 300, 'Credits');
         this.pointer = this.add.image(this.startButton.x - 80, 300, 'Arrow');
-
+        
         //load sounds
         menu_music = this.sound.add('menu_bgm', {volume: 0.5});
         menu_music.setLoop(true);
@@ -64,6 +66,7 @@ class Menu extends Phaser.Scene {
     update() {
         if(keySPACE.isDown && this.gaming) {
             menu_music.mute = true;
+            this.cameras.main.fadeOut(1000);
             this.scene.start('playScene');
         } else if (keySPACE.isDown) {
             this.scene.start('creditsScene');

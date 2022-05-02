@@ -21,7 +21,7 @@ let borderPadding = borderUISize / 3;
 let keyLEFT, keyRIGHT, keySPACE, keyENTER, keyP, keyS;
 
 //sprite
-let player, monster;
+let player, monster, fade;
 
 //audio
-let music, menu_music;
+let music, menu_music, scene;
