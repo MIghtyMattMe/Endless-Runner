@@ -35,7 +35,7 @@ class Menu extends Phaser.Scene {
         //load sounds
         menu_music = this.sound.add('menu_bgm', {volume: 0.5});
         menu_music.setLoop(true);
-        menu_music.play();
+        //menu_music.play();
         this.moveSFX = this.sound.add('move');
         this.selectSFX = this.sound.add('select');
 
