@@ -38,7 +38,7 @@ class Play extends Phaser.Scene {
         //init music
         music = this.sound.add('bgm', {volume: 0.5});
         music.setLoop(true);
-        //music.play();
+        music.play();
 
         //init sound effects
         this.jumpSFX = this.sound.add('Jump');
