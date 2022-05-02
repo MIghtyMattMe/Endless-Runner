@@ -224,8 +224,6 @@ class Play extends Phaser.Scene {
 
             //monster animation
             monster.anims.play("monsterMovement", true);
-            //speed up anim
-            //this.game.anims.play('spinCoin', true);
 
             //speeds up the game
             if((this.minutes != 0 && this.minutes%15 == 0) && (!this.gameup)){
@@ -242,6 +240,8 @@ class Play extends Phaser.Scene {
                     this.gameup = false;
                 });
             }
+            timeH = this.hours;
+            timeM = this.minutes;
         }
     }
 
@@ -292,6 +292,6 @@ class Play extends Phaser.Scene {
     gameover() {
         //go back to main menu
         music.mute = true;
-        this.scene.start('GameOverScene');
+        this.scene.start('gameOverScene');
     }
 }

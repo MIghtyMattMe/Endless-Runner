@@ -25,3 +25,6 @@ let player, monster, fade;
 
 //audio
 let music, menu_music, scene;
+
+//random
+let timeH, timeM;

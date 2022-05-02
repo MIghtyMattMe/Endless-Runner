@@ -4,7 +4,7 @@ class GameOver extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("Background", "./assets/menu/menu_screen.png");
+        this.load.image("Background", "./assets/background/bgTest.png");
         this.load.image("Back", "./assets/credits_back.png");
 
         //preload audio
@@ -17,7 +17,10 @@ class GameOver extends Phaser.Scene {
         let backi = this.add.image(320, 240, 'Back').setOrigin(0.5, 0.5);
         backi.alpha = 0.7;
 
-        let txtGO = this.add.text(120, 140, "GAME OVER");
+        let txtGO = this.add.text(game.config.width/2 - 70, 180, "GAME OVER\n---------");
+        let txtGO1 = this.add.text(game.config.width/2 - 60, 260, "Woke up at "+ timeH +":"+timeM);
+        txtGO.setFontSize(30);
+
         //txt.font = '';
 
         //declare keys
