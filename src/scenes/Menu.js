@@ -65,10 +65,11 @@ class Menu extends Phaser.Scene {
 
     update() {
         if(keySPACE.isDown && this.gaming) {
-            menu_music.mute = true;
+            menu_music.stop();
             this.cameras.main.fadeOut(1000);
             this.scene.start('playScene');
         } else if (keySPACE.isDown) {
+            menu_music.stop();
             this.scene.start('creditsScene');
         }
         if(keyLEFT.isDown) {

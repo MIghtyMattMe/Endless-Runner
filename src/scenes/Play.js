@@ -78,7 +78,7 @@ class Play extends Phaser.Scene {
         this.obj = [];
         this.powers = [];
         this.powerup = false;
-        this.objXVelocity = -150;
+        this.objXVelocity = -170;
         this.minTime = 1000;
         this.maxTime = 1700;
         this.t = 0;
@@ -194,6 +194,7 @@ class Play extends Phaser.Scene {
 
             //create and move obs
             for (this.i = 0; this.i < this.obj.length; this.i++) {
+                this.obj[this.i].setSize(this.obj[this.i].width/2, this.obj[this.i].height)
                 this.obj[this.i].setVelocityX(this.objXVelocity);
                 if (this.obj[this.i].x <= 0) {
                     this.dest = this.obj.splice(0, 1);
@@ -229,10 +230,10 @@ class Play extends Phaser.Scene {
             //speeds up the game
             if((this.minutes != 0 && this.minutes%15 == 0) && (!this.gameup)){
                 this.gameup = true;
-                if(this.minTime > 700){
-                    this.objXVelocity -= 20;
-                    this.minTime -= 50;
-                    this.maxTime -= 150;
+                if(this.minTime > 600){
+                    this.objXVelocity -= 25;
+                    this.minTime -= 100;
+                    this.maxTime -= 300;
                     player.jumpForce -= 0.25;
                     player.gravityVal += 90;
                     player.setGravityY(player.gravityVal);
@@ -255,7 +256,7 @@ class Play extends Phaser.Scene {
                 } else if (objNum == 2) {
                     this.obj.push(this.obs.create(670, this.top - 40, 'testObstacle3'));
                 }
-                objNum = Phaser.Math.Between(0, 2);
+                objNum = Phaser.Math.Between(0, 4);
                 if (objNum == 0 && this.powerup == false) {
                     this.powers.push(this.spd.create(750, this.top, 'SpeedUp').play('spinCoin', true));
                     this.powerup = true;
@@ -266,11 +267,12 @@ class Play extends Phaser.Scene {
     }
 
     trip(){
-        player.setVelocityX(-100);
-        player.jumpDisabled = true;
-        if (!this.tripSFX.isPlaying) {
+        player.setVelocityX(-80);
+        //player.jumpDisabled = true;
+        if (!this.tripSFX.isPlaying && !player.jumpDisabled) {
             this.tripSFX.play();
         }
+        player.jumpDisabled = true;
         this.time.delayedCall(500, () => {
             player.jumpDisabled = false;
             player.setVelocityX(player.xSpeed);
